@@ -38,7 +38,7 @@ public class LoginController {
      * @return
      */
     @ApiOperation(value = "用户登录", notes = "用户登录接口，返回token")
-    @PostMapping("/login")
+    @PostMapping
     public R login(@RequestBody @Validated User user) {
         user = loginService.login(user);
         // 登录成功，生成token
