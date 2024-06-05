@@ -2,7 +2,7 @@ package com.zkg.tiktok.service.user.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zkg.tiktok.entity.user.UserRole;
-import com.zkg.tiktok.mapper.UserRoleMapper;
+import com.zkg.tiktok.mapper.user.UserRoleMapper;
 import com.zkg.tiktok.service.user.UserRoleService;
 import org.springframework.stereotype.Service;
 

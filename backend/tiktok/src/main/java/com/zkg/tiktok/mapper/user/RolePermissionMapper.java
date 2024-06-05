@@ -1,4 +1,4 @@
-package com.zkg.tiktok.mapper;
+package com.zkg.tiktok.mapper.user;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zkg.tiktok.entity.user.RolePermission;

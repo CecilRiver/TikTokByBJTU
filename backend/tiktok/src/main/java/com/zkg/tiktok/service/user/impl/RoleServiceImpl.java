@@ -6,21 +6,18 @@ import com.zkg.tiktok.entity.user.Role;
 import com.zkg.tiktok.entity.user.RolePermission;
 import com.zkg.tiktok.entity.user.Tree;
 import com.zkg.tiktok.entity.user.UserRole;
-import com.zkg.tiktok.mapper.RoleMapper;
+import com.zkg.tiktok.mapper.user.RoleMapper;
 import com.zkg.tiktok.service.user.RolePermissionService;
 import com.zkg.tiktok.service.user.RoleService;
 import com.zkg.tiktok.service.user.UserRoleService;
 import com.zkg.tiktok.util.R;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 import com.zkg.tiktok.entity.vo.*;
