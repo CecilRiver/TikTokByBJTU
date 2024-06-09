@@ -1,11 +1,19 @@
 {
     "compilerOptions": {
-        "types": [
-            "vuetify"
-        ]
+        "target": "esnext",
+        "module": "esnext",
+        "types": ["node","vuetify"],
+        "lib": ["dom", "esnext"],
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"]
+        }
     },
     "include": [
         "src/**/*.js",
         "src/**/*.vue"
     ],
+    "exclude": [
+        "node_modules"
+    ]
 }
