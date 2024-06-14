@@ -7,7 +7,9 @@ import com.zkg.tiktok.entity.user.Follow;
 import com.zkg.tiktok.entity.vo.BasePage;
 import com.zkg.tiktok.exception.BaseException;
 import com.zkg.tiktok.mapper.FollowMapper;
+import com.zkg.tiktok.service.FeedService;
 import com.zkg.tiktok.service.user.FollowService;
+import com.zkg.tiktok.service.video.VideoService;
 import com.zkg.tiktok.util.RedisCacheUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -30,12 +32,12 @@ import java.util.stream.Collectors;
 @Service
 public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> implements FollowService {
 
-//    @Autowired
-//    private FeedService feedService;
+    @Autowired
+    private FeedService feedService;
 
-//    @Autowired
-//    @Lazy
-//    private VideoService videoService;
+    @Autowired
+    @Lazy
+    private VideoService videoService;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -97,40 +99,40 @@ public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> impleme
         return typedTuples.stream().map(t -> Long.parseLong(t.getValue().toString())).collect(Collectors.toList());
     }
 
-//    @Override
-//    public Boolean follows(Long followsId, Long userId) {
-//
-//        if (followsId.equals(userId)) {
-//            throw new BaseException("你不能关注自己");
-//        }
-//
-//        // 直接保存(唯一索引),保存失败则删除
-//        final Follow follow = new Follow();
-//        follow.setFollowId(followsId);
-//        follow.setUserId(userId);
-//        try {
-//            save(follow);
-//            final Date date = new Date();
-//            // 自己关注列表添加
-//            redisTemplate.opsForZSet().add(RedisConstant.USER_FOLLOW + userId, followsId, date.getTime());
-//            // 对方粉丝列表添加
-//            redisTemplate.opsForZSet().add(RedisConstant.USER_FANS + followsId, userId, date.getTime());
-//        } catch (Exception e) {
-//            // 删除
-//            remove(new LambdaQueryWrapper<Follow>().eq(Follow::getFollowId, followsId).eq(Follow::getUserId, userId));
-//            // 删除收件箱的视频
-//            // 获取关注人的视频
-//            final List<Long> videoIds = (List<Long>) videoService.listVideoIdByUserId(followsId);
-//            feedService.deleteInBoxFeed(userId, videoIds);
-//            // 自己关注列表删除
-//            redisTemplate.opsForZSet().remove(RedisConstant.USER_FOLLOW + userId, followsId);
-//            // 对方粉丝列表删除
-//            redisTemplate.opsForZSet().remove(RedisConstant.USER_FANS + followsId, userId);
-//            return false;
-//        }
-//
-//        return true;
-//    }
+    @Override
+    public Boolean follows(Long followsId, Long userId) {
+
+        if (followsId.equals(userId)) {
+            throw new BaseException("你不能关注自己");
+        }
+
+        // 直接保存(唯一索引),保存失败则删除
+        final Follow follow = new Follow();
+        follow.setFollowId(followsId);
+        follow.setUserId(userId);
+        try {
+            save(follow);
+            final Date date = new Date();
+            // 自己关注列表添加
+            redisTemplate.opsForZSet().add(RedisConstant.USER_FOLLOW + userId, followsId, date.getTime());
+            // 对方粉丝列表添加
+            redisTemplate.opsForZSet().add(RedisConstant.USER_FANS + followsId, userId, date.getTime());
+        } catch (Exception e) {
+            // 删除
+            remove(new LambdaQueryWrapper<Follow>().eq(Follow::getFollowId, followsId).eq(Follow::getUserId, userId));
+            // 删除收件箱的视频
+            // 获取关注人的视频
+            final List<Long> videoIds = (List<Long>) videoService.listVideoIdByUserId(followsId);
+            feedService.deleteInBoxFeed(userId, videoIds);
+            // 自己关注列表删除
+            redisTemplate.opsForZSet().remove(RedisConstant.USER_FOLLOW + userId, followsId);
+            // 对方粉丝列表删除
+            redisTemplate.opsForZSet().remove(RedisConstant.USER_FANS + followsId, userId);
+            return false;
+        }
+
+        return true;
+    }
 
     @Override
     public Boolean isFollows(Long followId, Long userId) {

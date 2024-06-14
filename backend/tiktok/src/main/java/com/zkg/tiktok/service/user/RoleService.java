@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface RoleService extends IService<Role> {
 
-//    List<Tree> tree();
+    List<Tree> tree();
 
     R removeRole(String id);
 

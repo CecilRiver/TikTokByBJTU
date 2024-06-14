@@ -1,5 +1,7 @@
 package com.zkg.tiktok;
 
+import com.zkg.tiktok.authority.AuthorityUtils;
+import com.zkg.tiktok.authority.BaseAuthority;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class TiktokApplication {
 
     public static void main(String[] args) {
+        AuthorityUtils.setGlobalVerify(true,new BaseAuthority());
         SpringApplication.run(TiktokApplication.class, args);
     }
 

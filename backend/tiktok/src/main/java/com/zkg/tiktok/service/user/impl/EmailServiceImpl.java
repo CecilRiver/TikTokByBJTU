@@ -34,7 +34,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     @Async
     public void send(String email, String context) {
-        simpleMailMessage.setSubject("幸运日");
+        simpleMailMessage.setSubject("北交tiktok");
         simpleMailMessage.setFrom(fromName);
         simpleMailMessage.setTo(email);
         simpleMailMessage.setText(context);

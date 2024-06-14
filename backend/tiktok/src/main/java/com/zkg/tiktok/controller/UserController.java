@@ -53,6 +53,8 @@ public class UserController {
     @ApiOperation(value = "获取个人信息", notes = "根据用户ID获取用户的详细信息")
     @GetMapping("/getInfo/{userId}")
     public R getInfo(@PathVariable Long userId){
+        System.out.println(userId+"来拿数据咯!");
+
         return R.ok().data(userService.getInfo(userId));
     }
 

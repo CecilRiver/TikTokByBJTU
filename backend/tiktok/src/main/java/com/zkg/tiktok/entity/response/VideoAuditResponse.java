@@ -2,8 +2,8 @@ package com.zkg.tiktok.entity.response;
 
 import lombok.Data;
 import lombok.ToString;
-import org.luckyjourney.entity.task.VideoTask;
-import org.luckyjourney.entity.video.Video;
+import com.zkg.tiktok.entity.task.VideoTask;
+import com.zkg.tiktok.entity.video.Video;
 
 /**
  * @description: 封装视频审核返回结果

@@ -7,10 +7,12 @@ import com.zkg.tiktok.entity.user.RolePermission;
 import com.zkg.tiktok.entity.user.Tree;
 import com.zkg.tiktok.entity.user.UserRole;
 import com.zkg.tiktok.mapper.user.RoleMapper;
+import com.zkg.tiktok.service.user.PermissionService;
 import com.zkg.tiktok.service.user.RolePermissionService;
 import com.zkg.tiktok.service.user.RoleService;
 import com.zkg.tiktok.service.user.UserRoleService;
 import com.zkg.tiktok.util.R;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,9 +20,13 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 import com.zkg.tiktok.entity.vo.*;
+
+import javax.annotation.Resource;
+
 /**
  * @Author: 张凯歌
  * @CreateTime: 2024-05-29
@@ -33,8 +39,8 @@ import com.zkg.tiktok.entity.vo.*;
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
 
-//    @Resource
-//    private PermissionService permissionService;
+    @Resource
+    private PermissionService permissionService;
 
     @Autowired
     private RolePermissionService rolePermissionService;
@@ -44,27 +50,27 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
 
 
-//    @Override
-//    public List<Tree> tree() {
-//        List<Tree> trees = permissionService.list(null).stream().map(permission -> {
-//
-//            Tree tree = new Tree();
-//            BeanUtils.copyProperties(permission, tree);
-//            tree.setTitle(permission.getName());
-//            tree.setSpread(true);
-//            return tree;
-//        }).collect(Collectors.toList());
-//
-//
-//        // 找到根节点
-//        List<Tree> parent = trees.stream().filter(tree -> tree.getPId().compareTo(0L) == 0).collect(Collectors.toList());
-//        for (Tree item : parent) {
-//            item.setChildren(new ArrayList<Tree>());
-//            item.getChildren().add(findChildren(item,trees));
-//        }
-//
-//        return parent;
-//    }
+    @Override
+    public List<Tree> tree() {
+        List<Tree> trees = permissionService.list(null).stream().map(permission -> {
+
+            Tree tree = new Tree();
+            BeanUtils.copyProperties(permission, tree);
+            tree.setTitle(permission.getName());
+            tree.setSpread(true);
+            return tree;
+        }).collect(Collectors.toList());
+
+
+        // 找到根节点
+        List<Tree> parent = trees.stream().filter(tree -> tree.getPId().compareTo(0L) == 0).collect(Collectors.toList());
+        for (Tree item : parent) {
+            item.setChildren(new ArrayList<Tree>());
+            item.getChildren().add(findChildren(item,trees));
+        }
+
+        return parent;
+    }
 
 
 
