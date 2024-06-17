@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://your-api-url.com/api'; // 修改为你的 API 基础 URL
+import { BASE_URL } from './config';
 
 // 获取分类数据的 API 函数
 export function getClassifications() {
@@ -8,6 +8,26 @@ export function getClassifications() {
     .then(response => response.data)
     .catch(error => {
       console.error('Error fetching classifications:', error);
+      throw error;
+    });
+}
+
+// 获取用户相关的分类
+export function apiGetClassifyByUser(userId) {
+  return axios.get(`${BASE_URL}/classifies/user/${userId}`)
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error fetching classifies by user:', error);
+      throw error;
+    });
+}
+
+// 获取所有分类
+export function apiClassifyGetAll() {
+  return axios.get(`${BASE_URL}/classifies`)
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error getting all classifications:', error);
       throw error;
     });
 }

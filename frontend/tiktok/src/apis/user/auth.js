@@ -15,3 +15,32 @@ export function apiAuth(type, info) {
       throw error;
     });
 }
+
+export function apiCheckCode(userId, code) {
+  return axios.post(`${BASE_URL}/user/checkCode`, { userId, code })
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error checking code:', error);
+      throw error;
+    });
+}
+
+// 忘记密码
+export function apiForgetPassword(email) {
+  return axios.post(`${BASE_URL}/user/forgetPassword`, { email })
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error in forget password:', error);
+      throw error;
+    });
+}
+
+// 获取验证码
+export function apiGetCode(email) {
+  return axios.post(`${BASE_URL}/user/getCode`, { email })
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error getting code:', error);
+      throw error;
+    });
+}

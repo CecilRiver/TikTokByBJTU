@@ -21,3 +21,22 @@ export function apiFavoriteVideo(favoriteId, videoId) {
       throw error;
     });
 }
+
+export function apiRemoveFavorite(favoriteId, videoId) {
+  return axios.delete(`${BASE_URL}/user/favorites/remove`, { data: { favoriteId, videoId } })
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error removing video from favorite:', error);
+      throw error;
+    });
+}
+
+// 保存视频到收藏夹
+export function apiSaveFavorite(favoriteId, videoId) {
+  return axios.post(`${BASE_URL}/user/favorites/save`, { favoriteId, videoId })
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error saving video to favorite:', error);
+      throw error;
+    });
+}

@@ -11,3 +11,13 @@ export function apiGetUserSearchHistory() {
       throw error;
     });
 }
+
+// 获取用户信息
+export function apiGetUserInfo(userId) {
+  return axios.get(`${BASE_URL}/user/info/${userId}`)
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error getting user information:', error);
+      throw error;
+    });
+}
