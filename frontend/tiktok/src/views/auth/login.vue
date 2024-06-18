@@ -30,7 +30,18 @@ const {showMessage, closeEvent} = defineProps({
 const loading = ref(false)
 const loginInfo = reactive({
   email: "",
-  password: ""
+  password: "",
+  avatar: "",
+  defaultFavoritesId: '',
+  description: '',
+  each: '',
+  gmtCreated: '',
+  gmtUpdated: '',
+  id: '',
+  isDeleted: '',
+  nickName: '',
+  roleName: '',
+  sex: ''
 })
 
 const loginVertify =()=>{

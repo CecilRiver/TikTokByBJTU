@@ -1,6 +1,7 @@
 package com.zkg.tiktok.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -27,9 +28,11 @@ public class BaseEntity implements Serializable {
     private Boolean isDeleted;
 
     @TableField(fill = FieldFill.INSERT)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
     private Date gmtCreated;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
     private Date gmtUpdated;
 
 }

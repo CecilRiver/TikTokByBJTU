@@ -1,15 +1,32 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://your-api-url.com/api'; // 修改为你的 API 基础 URL
+import { BASE_URL } from '../config';
+
 
 // 用户认证函数，type表示登录操作类型，info包含登录信息
 export function apiAuth(type, info) {
-  return axios.post(`${BASE_URL}/auth/login`, {
+  console.log(`${BASE_URL}/login`);
+  console.log(new Date().toISOString());
+  return axios.post(`${BASE_URL}/login`, {
     type: type,
     email: info.email,
-    password: info.password
+    password: info.password,
+    avatar: 0,  // 确保这里使用合适的默认值，如果是数字类型的话
+    defaultFavoritesId: 0,  // 如果是数字类型，则应该使用0
+    description: '',
+    each: false,  // 这应该是一个布尔值
+    gmtCreated: new Date().toISOString(),  // 使用合适的日期字符串
+    gmtUpdated: new Date().toISOString(),  // 使用合适的日期字符串
+    id: 0,
+    isDeleted: false,
+    nickName: '',
+    roleName: [],
+    sex: false,
   })
-    .then(response => response.data)
+    .then(response => {
+      console.log(response);
+      return response.data
+    })
     .catch(error => {
       console.error('Error during authentication:', error);
       throw error;

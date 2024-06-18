@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://your-api-url.com/api';
+export const BASE_URL = 'http://localhost:8882/tiktok';
