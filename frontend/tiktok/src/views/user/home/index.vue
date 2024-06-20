@@ -1,6 +1,6 @@
 <template>
   <div class="home-main">
-      <img :src="getAvatarUrl(userInfo.avatar)" alt="User Avatar">
+      <img :src="getAvatarUrl(userInfo.avatar)" alt="User Avatar" @click="handleAvatarChange">
       <h1>@ {{userInfo.nickName }}</h1>
       <p class="description">{{ userInfo.description }}</p>
       <div class="socialize">
@@ -13,7 +13,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { BASE_URL } from '@/apis/config.js';
-import { apiGetUserInfo } from '@/apis/user/user.js';
+import { apiGetUserInfo, apiGetAvatarToken, apiUpdateUserInfo } from '../../../apis/user/user.js';
 
 const userInfo = ref({
   id: null,
@@ -22,8 +22,83 @@ const userInfo = ref({
   sex: false,
   description: '',
   follow: 0,
-  fans: 0
+  fans: 0,
+  defaultFavoritesId: 0,
 });
+
+// 获取七牛云上传token
+const getAvatarToken = async () => {
+  try {
+    const response = await apiGetAvatarToken();
+    console.log(response);
+    if (response.state && response.data) {
+      return response.data;
+    } else {
+      console.error('Failed to get upload token:', response.message);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching upload token:', error);
+    return null;
+  }
+};
+
+// 更新用户头像信息
+const updateUserInfo = async (newAvatarId) => {
+  const updatedInfo = {
+  defaultFavoritesId: userInfo.value.defaultFavoritesId,
+  description: userInfo.value.description,
+  nickName: userInfo.value.nickName,
+  sex: userInfo.value.sex,
+  avatar: newAvatarId };
+  console.log(updatedInfo);
+  try {
+    const response = await apiUpdateUserInfo(updatedInfo);
+    console.log(response);
+    if (response.state) {
+      userInfo.value.avatar = newAvatarId;
+      alert('头像更新成功');
+    } else {
+      console.error('Failed to update user avatar:', response.message);
+    }
+  } catch (error) {
+    console.error('Error updating user avatar:', error);
+  }
+};
+
+// 处理头像点击事件，选择和上传头像
+const handleAvatarChange = async () => {
+  const token = await getAvatarToken();
+  if (!token) return;
+  
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*';
+  fileInput.onchange = async e => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('token', token);
+
+    try {
+      const uploadResponse = await fetch('https://up-z1.qiniup.com', {
+        method: 'POST',
+        body: formData
+      }).then(res => res.json());
+      console.log(uploadResponse);
+      if (uploadResponse.key) {
+        await updateUserInfo(uploadResponse.key); // Assuming 'key' is the ID or URL from the upload response
+      } else {
+        console.error('Upload failed:', uploadResponse.message);
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
+  fileInput.click();
+};
 
 const getAvatarUrl = (avatarId) => {
   if(avatarId == 0){
