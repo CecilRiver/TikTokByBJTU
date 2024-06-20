@@ -56,7 +56,8 @@ const { videoList, noDataMsg, showHot } = defineProps({
 const rankList = ref([])
 onMounted(() => {
     if (showHot) {
-        apiVideoHotRank().then(({ data }) => {
+        apiVideoHotRank().then(( data ) => {
+            console.log("热度视频排行榜",data);
             rankList.value = data.data.splice(0,10)
         })
     }

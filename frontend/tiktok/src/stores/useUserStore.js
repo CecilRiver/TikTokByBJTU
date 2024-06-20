@@ -16,6 +16,9 @@ export default defineStore('user', {
         },
         setUserInfo(userInfo) {
             this.info = userInfo; // 更新用户信息
+        },
+        getToken() {
+            return this.token;
         }
     }
 })

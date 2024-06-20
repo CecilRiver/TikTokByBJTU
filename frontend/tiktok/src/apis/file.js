@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://your-api-url.com/api'; // 修改为你的 API 基础 URL
+import { BASE_URL } from './config';
 
 // 获取文件的 URL
 export function apiFileGet(fileId) {
-  return axios.get(`${BASE_URL}/files/${fileId}`)
-    .then(response => response.data.url)
+  return axios.get(`${BASE_URL}/file/${fileId}`)
+    .then(response)
     .catch(error => {
       console.error('Error fetching file URL:', error);
       throw error;

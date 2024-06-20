@@ -1,16 +1,41 @@
 <template>
-  <div>
-    <h1>Followed Videos</h1>
-    <p>This is the page where you can view videos from channels you follow.</p>
-  </div>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <v-typography variant="h4">推荐视频</v-typography>
+      </v-col>
+      <VideoList :videos="recommendedVideos" />
+    </v-row>
+  </v-container>
 </template>
 
-<script>
-export default {
-  name: 'FollowVideo'
-}
+<script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import VideoList from '@/components/video/list.vue';
+
+const recommendedVideos = ref([]);
+
+onMounted(async () => {
+    try {
+        const response = await axios.get('http://localhost:8882/tiktok/index/pushVideos');
+        if (response.data.state && response.data.data) {
+            recommendedVideos.value = response.data.data.map(video => ({
+                id: video.id,
+                title: video.title,
+                creator: video.user.nickName,
+                thumbnail: video.cover,
+                link: video.url, 
+                description: video.description
+            }));
+        } else {
+            console.error('Failed to fetch videos:', response.data.message);
+        }
+    } catch (error) {
+        console.error('Error fetching videos:', error);
+    }
+});
 </script>
 
-<style>
-/* 在这里添加你的 CSS 样式 */
+<style scoped>
 </style>

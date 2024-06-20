@@ -31,28 +31,21 @@ const loading = ref(false)
 const loginInfo = reactive({
   email: "",
   password: "",
-  avatar: "",
-  defaultFavoritesId: '',
-  description: '',
-  each: '',
-  gmtCreated: '',
-  gmtUpdated: '',
-  id: '',
-  isDeleted: '',
-  nickName: '',
-  roleName: '',
-  sex: ''
 })
 
 const loginVertify =()=>{
   loading.value = true
-  apiAuth(1, loginInfo).then(({data})=>{
+  apiAuth(1, loginInfo).then(({message,data,state})=>{
     loading.value = false
-    showMessage(data.message, data.state?'success':'error')
-    if(!data.state) {
-      return;
+    showMessage(message, state ? 'success' : 'error');
+    if (state) {
+      closeEvent(data);
     }
-    closeEvent({info: {}, token: data.data.token})
-  })
+
+  }).catch((error) => {
+    loading.value = false;
+    showMessage('登录失败，请检查网络或联系管理员', 'error');
+    console.error('Login error:', error);
+  });
 }
 </script>

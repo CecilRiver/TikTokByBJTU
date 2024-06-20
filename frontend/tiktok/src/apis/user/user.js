@@ -1,6 +1,20 @@
 import axios from 'axios';
+import { BASE_URL } from '../config';
 
-const BASE_URL = 'http://your-api-url.com/api'; // 修改为你的 API 基础 URL
+
+
+function getUserId() {
+  const userJson = sessionStorage.getItem('user');
+  if (!userJson) {
+    throw new Error('User data not found in sessionStorage');
+  }
+  const user = JSON.parse(userJson);
+  const userId = user?.id;
+  if (!userId) {
+    throw new Error('Invalid user data');
+  }
+  return userId
+}
 
 // 获取用户的搜索历史
 export function apiGetUserSearchHistory() {
@@ -13,8 +27,13 @@ export function apiGetUserSearchHistory() {
 }
 
 // 获取用户信息
-export function apiGetUserInfo(userId) {
-  return axios.get(`${BASE_URL}/user/info/${userId}`)
+export function apiGetUserInfo() {
+  const userId = sessionStorage.getItem('userId');
+  if (!userId) {
+    throw new Error('Invalid user data');
+  }
+  console.log(`${BASE_URL}/customer/getInfo/${userId}`);
+  return axios.get(`${BASE_URL}/customer/getInfo/${userId}`)
     .then(response => response.data)
     .catch(error => {
       console.error('Error getting user information:', error);

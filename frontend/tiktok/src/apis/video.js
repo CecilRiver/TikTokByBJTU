@@ -1,6 +1,42 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://your-api-url.com/api'; // 修改为你的 API 基础 URL
+import { BASE_URL } from './config';
+
+function getUserId() {
+  const userJson = sessionStorage.getItem('user');
+  if (!userJson) {
+    throw new Error('User data not found in sessionStorage');
+  }
+  const user = JSON.parse(userJson);
+  const userId = user?.id;
+  if (!userId) {
+    throw new Error('Invalid user data');
+  }
+  return userId
+}
+
+// 获取推荐视频列表
+export function apiGetRecommendedVideos() {
+  return axios.get(`${BASE_URL}/index/pushVideos`)
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error fetching recommended videos:', error);
+      throw error;
+    });
+}
+
+// 获取视频流
+export function apiGetVideoStream(videoId) {
+  return axios.get(`${BASE_URL}/file/${videoId}`, { responseType: 'blob' })
+    .then(response => {
+      const url = URL.createObjectURL(response.data);
+      return url;
+    })
+    .catch(error => {
+      console.error('Error fetching video stream:', error);
+      throw error;
+    });
+}
 
 // 通过分类获取视频列表
 export function apiVideoByClassfiy(classifyId, page, limit) {
@@ -38,7 +74,7 @@ export function apiGetVideoById(videoId) {
 
 // 获取热门视频排名
 export function apiVideoHotRank() {
-  return axios.get(`${BASE_URL}/videos/hotRank`)
+  return axios.get(`${BASE_URL}/index/video/hot/rank`)
     .then(response => response.data)
     .catch(error => {
       console.error('Error fetching hot video ranks:', error);
@@ -67,7 +103,8 @@ export function apiGetVideoBySimilar(videoId) {
 }
 
 // 初始化关注视频流
-export function apiInitFollowFeed(userId) {
+export function apiInitFollowFeed() {
+  const userId = getUserId();
   return axios.get(`${BASE_URL}/videos/followFeed/${userId}`)
     .then(response => response.data)
     .catch(error => {

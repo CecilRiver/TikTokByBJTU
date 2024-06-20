@@ -20,6 +20,7 @@ import { apiVideoHotRank } from '../apis/video';
 const rankList = ref([])
 onMounted(() => {
     apiVideoHotRank().then(({ data }) => {
+        console.log("热度视频排行榜",data);
         rankList.value = data.data.splice(0, 10)
     })
 })

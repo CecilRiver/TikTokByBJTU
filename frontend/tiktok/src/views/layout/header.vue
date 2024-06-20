@@ -1,7 +1,7 @@
 <template>
   <v-app-bar floating name="app-bar" :elevation="0" color="#252632">
     <v-app-bar-nav-icon icon="mdi-menu" @click="clickEvent(1, 1)"></v-app-bar-nav-icon>
-    <v-app-bar-title>幸运日</v-app-bar-title>
+    <v-app-bar-title>豆音</v-app-bar-title>
     <!-- <v-card-subtitle>LUCK JOUNEY</v-card-subtitle> -->
     <!-- <div style="text-align: center;width: 80%;" class="mt-2 pt-4">
       <v-text-field clearable v-model="searchKey" v-on:keyup.enter="search" style="width: 400px;margin: 0 auto; text-align: center;" 

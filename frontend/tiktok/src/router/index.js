@@ -28,6 +28,10 @@ const routes = [
     component: () => import("../views/video/index.vue"),
   },
   {
+    path: '/video/:videoId',
+    component: () => import("../views/videoPlayer.vue")
+  },
+  {
     path: "/pushVideo",
     component: () => import("../views/pushVideo/index.vue"),
   },

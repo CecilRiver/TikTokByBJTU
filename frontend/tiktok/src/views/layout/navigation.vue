@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer color="#252632">
     <v-list v-if="userStore.token">
-      <v-list-item :prepend-avatar="userStore.info.avatar?apiFileGet(userStore.info.avatar):'/logo.png'" :title="userStore.info.nickName"
+      <v-list-item :prepend-avatar="userStore.info.avatar?getAvatarUrl(userStore.info.avatar):'https://b0.bdstatic.com/0df6c8c7f109aa7b67e7cb15e6f8d025.jpg@h_1280'" :title="userStore.info.nickName"
         :subtitle="userStore.info.description"></v-list-item>
     </v-list>
     <v-list v-else>
@@ -26,7 +26,6 @@
 <script setup>
 import { ref } from 'vue';
 import { apiClassifyGetAll } from '../../apis/classify';
-import { apiFileGet } from '../../apis/file';
 import { useUserStore } from '../../stores';
 const userStore = useUserStore()
 const allClassifyList = ref([])
@@ -37,6 +36,11 @@ apiClassifyGetAll().then(({ data }) => {
   }
   allClassifyList.value = data.data
 })
+
+const getAvatarUrl = (avatarId) => {
+  return `${BASE_URL}/file/${avatarId}`;
+}
+
 </script>
 <style lang="scss" scoped>
 .v-navigation-drawer {

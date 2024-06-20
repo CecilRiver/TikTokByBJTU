@@ -6,17 +6,16 @@ import { BASE_URL } from '../config';
 // 用户认证函数，type表示登录操作类型，info包含登录信息
 export function apiAuth(type, info) {
   console.log(`${BASE_URL}/login`);
-  console.log(new Date().toISOString());
   return axios.post(`${BASE_URL}/login`, {
     type: type,
     email: info.email,
     password: info.password,
-    avatar: 0,  // 确保这里使用合适的默认值，如果是数字类型的话
-    defaultFavoritesId: 0,  // 如果是数字类型，则应该使用0
+    avatar: 0,
+    defaultFavoritesId: 0,
     description: '',
-    each: false,  // 这应该是一个布尔值
-    gmtCreated: new Date().toISOString(),  // 使用合适的日期字符串
-    gmtUpdated: new Date().toISOString(),  // 使用合适的日期字符串
+    each: false,
+    gmtCreated: new Date().toISOString(),
+    gmtUpdated: new Date().toISOString(),
     id: 0,
     isDeleted: false,
     nickName: '',
@@ -24,7 +23,7 @@ export function apiAuth(type, info) {
     sex: false,
   })
     .then(response => {
-      console.log(response);
+      console.log(response.data);
       return response.data
     })
     .catch(error => {
@@ -61,3 +60,51 @@ export function apiGetCode(email) {
       throw error;
     });
 }
+
+
+// 获取图形验证码
+export function apiGetCaptcha(uuid) {
+  return `${BASE_URL}/login/captcha.jpg/${uuid}`; // 返回图形验证码的URL，用于<img>标签的src
+}
+
+// 发送邮箱验证码
+export function apiGetEmailCode(email, captchaCode, uuid) {
+  return axios.post(`${BASE_URL}/login/getCode`, {
+    email,
+    code: captchaCode,
+    uuid
+  })
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error getting email code:', error);
+      throw error;
+    });
+}
+
+// 验证邮箱验证码
+export function apiCheckEmailCode(email, code) {
+  return axios.post(`${BASE_URL}/login/check?email=${encodeURIComponent(email)}&code=${code}`)
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error checking email code:', error);
+      throw error;
+    });
+}
+
+// 注册新用户
+export function apiRegister(registerInfo) {
+  const registerVO = {
+    email: registerInfo.email,
+    code: registerInfo.code,
+    nickName: registerInfo.nickName,
+    password: registerInfo.password,
+    uuid: registerInfo.uuid
+  }
+  return axios.post(`${BASE_URL}/login/register`, registerVO)
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Error during registration:', error);
+      throw error;
+    });
+}
+

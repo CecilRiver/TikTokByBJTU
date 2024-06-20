@@ -88,7 +88,7 @@
 import { reactive, ref } from 'vue';
 import { VOtpInput } from 'vuetify/labs/VOtpInput';
 import { apiCheckCode, apiForgetPassword, apiGetCode } from '../../apis/user/auth';
-import buildUtils from '../../utils/buildUtil';
+import {guid} from '../../utils/buildUtil';
 const step = ref(1)
 const stepData = ref({
     1: {
@@ -120,7 +120,7 @@ const {showMessage, closeEvent} = defineProps({
 const isLoading = ref(false)
 const captchaImg = ref()
 const getCaptchaImg = () => {
-    registerInfo.uuid = buildUtils.guid()
+    registerInfo.uuid = guid()
     captchaImg.value = apiGetCode(1, registerInfo.uuid)
 }
 const registerInfo = reactive({
