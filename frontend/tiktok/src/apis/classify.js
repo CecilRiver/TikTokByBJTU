@@ -1,13 +1,34 @@
-import axios from 'axios';
+import request from './request'
 
-const BASE_URL = 'http://your-api-url.com/api'; // 修改为你的 API 基础 URL
+/**
+ * 获取所有视频分类
+ * @returns 分类
+ */
+export const apiClassifyGetAll = ()=>{
+    return request.get("/index/types")
+}
 
-// 获取分类数据的 API 函数
-export function getClassifications() {
-  return axios.get(`${BASE_URL}/classifications`)
-    .then(response => response.data)
-    .catch(error => {
-      console.error('Error fetching classifications:', error);
-      throw error;
-    });
+/**
+ * 获取用户订阅的分类
+ * @returns 成功
+ */
+export const apiGetClassifyByUser = ()=>{
+    return request.get(`/customer/subscribe`)
+}
+
+/**
+ * 用户订阅分类/取消订阅分类
+ * @param {int} id 分类id
+ * @returns 成功
+ */
+export const apiClassifySubscribe = (id)=>{
+    console.log(id)
+    return request.post(`/customer/subscribe?types=${id}`)
+}
+/**
+ * 未订阅的分类
+ * @returns 
+ */
+export const apiGetNoSubscribe =()=>{
+    return request.get(`/customer/noSubscribe`)
 }

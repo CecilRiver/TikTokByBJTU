@@ -17,6 +17,7 @@
 <script setup>
 import { reactive, ref } from 'vue';
 import { apiAuth } from '../../apis/user/auth';
+
 const {showMessage, closeEvent} = defineProps({
   showMessage: {
     type: Function,
@@ -37,6 +38,8 @@ const loginVertify =()=>{
   loading.value = true
   apiAuth(1, loginInfo).then(({data})=>{
     loading.value = false
+    console.log(data)
+
     showMessage(data.message, data.state?'success':'error')
     if(!data.state) {
       return;

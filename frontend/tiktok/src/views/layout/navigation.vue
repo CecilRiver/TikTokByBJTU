@@ -5,7 +5,7 @@
         :subtitle="userStore.info.description"></v-list-item>
     </v-list>
     <v-list v-else>
-      <v-list-item prepend-icon="mdi-account" title="未登录" subtitle="请先登录，享受更多服务"></v-list-item>
+      <v-list-item prepend-icon="mdi-account" title="未登录" subtitle="请先登录"></v-list-item>
     </v-list>
     <v-divider />
 
@@ -18,8 +18,14 @@
         <v-list-item prepend-icon="mdi-account" title="个人中心" to="/user"></v-list-item>
         <v-list-item prepend-icon="mdi-heart" title="关注的人" to="/followVideo"></v-list-item>
       </template>
-      <v-list-item :prepend-icon="item.icon || 'mdi-file-document-alert-outline'" :title="item.name"
-        v-for="item in allClassifyList" :to="`/video/${item.id}`"></v-list-item>
+      <v-list-item 
+  :prepend-icon="item.icon || 'mdi-video-outline'" 
+  :title="item.name"
+  v-for="item in allClassifyList" 
+  :key="item.id" 
+  :to="`/video/${item.id}`">
+</v-list-item>
+
     </v-list>
   </v-navigation-drawer>
 </template>

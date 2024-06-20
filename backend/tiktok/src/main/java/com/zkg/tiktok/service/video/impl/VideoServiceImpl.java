@@ -181,7 +181,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
         videoTask.setIsAdd(isAdd);
         videoTask.setOldState(isAdd ? true : video.getOpen());
         videoTask.setNewState(true);
-        videoPublishAuditService.audit(videoTask, false);
+        videoPublishAuditService.audit(videoTask, true);
     }
 
 

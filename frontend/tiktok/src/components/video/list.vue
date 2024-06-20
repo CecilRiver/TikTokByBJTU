@@ -5,13 +5,13 @@
             <v-col v-if="showHot">
                 <v-card elevation="5">
                     <v-list :density="'compact'" lines="one" height="350px" style="background-color: #323443;">
-                        <v-list-subheader>热度视频 排行榜</v-list-subheader>
+                        <v-list-subheader>视频热度排行榜</v-list-subheader>
                     <v-list-item v-for="(rank, n) in rankList" :title="rank.title" :to="`/?play=${rank.videoId}&n=${n}`" :active="false">
                         <template #prepend>
                             <v-icon size="30">{{ `mdi-numeric-${n+1}` }}</v-icon>
                         </template>
                     <template #subtitle>
-                        {{ `${rank.hotFormat} 热度` }}
+                        {{ `${rank.hot} 热度` }}
                     </template>
                     </v-list-item>
                 </v-list>
@@ -21,11 +21,11 @@
                 <VideoCard @click="playVideo(video)" :video-info="video" />
             </v-col>
 
-            <v-col cols="12" v-if="!videoList || videoList.length == 0">
+            <!-- <v-col cols="12" v-if="!videoList || videoList.length == 0">
                 <VCard height="300px" class="ma-4" :variant="'tonal'" style="text-align: center;line-height: 300px;">
                     {{ noDataMsg }}
                 </VCard>
-            </v-col>
+            </v-col> -->
         </v-row>
         <v-dialog :model-value="videoDialog" fullscreen transition="dialog-bottom-transition">
             <v-card v-if="currentVideo">
@@ -59,6 +59,7 @@ onMounted(() => {
         apiVideoHotRank().then(({ data }) => {
             rankList.value = data.data.splice(0,10)
         })
+        console.log(rankList)
     }
 })
 const currentVideo = ref(null)

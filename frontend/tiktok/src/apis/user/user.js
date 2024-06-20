@@ -1,13 +1,40 @@
-import axios from 'axios';
+import * as qiniu from 'qiniu-js'
+import request from '../request'
+const Config = {
+    qiniuOSS: {}
+}
+/**
+ * 获取用户信息
+ * @param {Int} userId 用户Id 
+ * @returns 
+ */
+export const apiGetUserInfo = (userId="")=>{
+    return request.get(`/customer/getInfo/${userId}`)
+}
 
-const BASE_URL = 'http://your-api-url.com/api'; // 修改为你的 API 基础 URL
+export const apiAvatarGetToken = async() => await request.get("/customer/avatar/token")
 
-// 获取用户的搜索历史
-export function apiGetUserSearchHistory() {
-  return axios.get(`${BASE_URL}/user/searchHistory`)
-    .then(response => response.data)
-    .catch(error => {
-      console.error('Error fetching user search history:', error);
-      throw error;
-    });
+export const apiUploadAvatar = async (file, callBack={next:()=>{},error:()=>{}, complete:()=>{}})=> {
+    const videoToken = (await apiAvatarGetToken()).data.data
+    
+    const observable = qiniu.upload(file, null, videoToken, {}, Config.qiniuOSS)
+    const subscription = observable.subscribe(callBack.next, callBack.error, callBack.complete) // 这样传参形式也可以
+    // subscription.unsubscribe() // 上传取消
+    return subscription;
+}
+
+/**
+ * 修改用户信息
+ * @param {object} info 用户信息
+ */
+export const apiChangeUserInfo = (info)=>{
+    return request.put(`/customer`, info)
+}
+
+/**
+ * 获取搜索记录
+ * @returns 
+ */
+export const apiGetUserSearchHistory = ()=>{
+    return request.get(`/index/search/history`)
 }

@@ -60,12 +60,15 @@ const getUserInfo = () => {
         info: {},
         token: null
       })
+
       return
     }
     apiInitFollowFeed()
     userStroe.$patch({
       info: data.data
     })
+    console.log(22)
+    console.log(userStroe)
   })
 }
 const showMessage = (text, color) => {
