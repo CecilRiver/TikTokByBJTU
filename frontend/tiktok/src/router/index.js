@@ -36,6 +36,12 @@ const routes = [
     component: () => import("../views/pushVideo/index.vue"),
   },
   {
+    path: '/friends-list/:tab',
+    name: 'FriendsList',
+    component: () => import("../views/user/FriendList.vue"),
+    props: true  // 开启 props 将路由参数作为 props 传递给组件
+  },
+  {
     path: "/user",
     component: () => import("../views/user/index.vue"),
     redirect: "/user/home",

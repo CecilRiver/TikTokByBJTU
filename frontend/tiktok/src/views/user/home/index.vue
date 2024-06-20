@@ -4,8 +4,8 @@
       <h1>@ {{userInfo.nickName }}</h1>
       <p class="description">{{ userInfo.description }}</p>
       <div class="socialize">
-        <p>关注: {{ userInfo.follow }}</p>
-        <p>粉丝: {{ userInfo.fans }}</p>
+        <p @click="goToFriends('follows')">关注: {{ userInfo.follow }}</p>
+        <p @click="goToFriends('fans')">粉丝: {{ userInfo.fans }}</p>
       </div>
   </div>
 </template>
@@ -14,6 +14,14 @@
 import { ref, onMounted } from 'vue';
 import { BASE_URL } from '@/apis/config.js';
 import { apiGetUserInfo, apiGetAvatarToken, apiUpdateUserInfo } from '../../../apis/user/user.js';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function goToFriends(tab) {
+  router.push({ name: 'FriendsList', params: { tab } });
+}
+
 
 const userInfo = ref({
   id: null,
@@ -30,7 +38,7 @@ const userInfo = ref({
 const getAvatarToken = async () => {
   try {
     const response = await apiGetAvatarToken();
-    console.log(response);
+    //console.log(response);
     if (response.state && response.data) {
       return response.data;
     } else {
