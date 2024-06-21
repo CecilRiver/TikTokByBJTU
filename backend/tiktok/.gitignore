@@ -4,6 +4,18 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### 构建产物 ###
+*.war
+*.ear
+*.class
+*.log
+spy.log
+.mvn/timing.properties
+release.properties
+dependency-reduced-pom.xml
+hs_err_pid*
+replay_pid*
+
 ### STS ###
 .apt_generated
 .classpath

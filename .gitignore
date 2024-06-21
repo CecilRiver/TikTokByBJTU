@@ -5,8 +5,23 @@ node_modules/
 target/
 *.class
 *.jar
+*.war
+*.ear
 !**/.mvn/wrapper/maven-wrapper.jar
 spy.log
+.mvn/timing.properties
+release.properties
+dependency-reduced-pom.xml
+hs_err_pid*
+replay_pid*
+
+# 前端构建产物
+dist/
+build/
+coverage/
+.vite/
+*.tsbuildinfo
+.eslintcache
 
 # IDE
 .idea/
