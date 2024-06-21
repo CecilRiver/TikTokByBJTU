@@ -14,6 +14,7 @@
 import { ref, onMounted } from 'vue';
 import { BASE_URL } from '@/apis/config.js';
 import { apiGetUserInfo, apiGetAvatarToken, apiUpdateUserInfo } from '../../../apis/user/user.js';
+import { apiSaveFile } from '../../../apis/file.js';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -95,9 +96,16 @@ const handleAvatarChange = async () => {
         method: 'POST',
         body: formData
       }).then(res => res.json());
-      console.log(uploadResponse);
+  //    console.log(uploadResponse);
       if (uploadResponse.key) {
-        await updateUserInfo(uploadResponse.key); // Assuming 'key' is the ID or URL from the upload response
+        try {
+          const saveResponse = await apiSaveFile(uploadResponse.key);
+          const avatarId = saveResponse.data; // 确保这里的返回值是正确的
+          console.log(avatarId);
+          await updateUserInfo(avatarId);
+        } catch (error) {
+          console.error('保存头像信息失败:', error);
+        }
       } else {
         console.error('Upload failed:', uploadResponse.message);
       }
