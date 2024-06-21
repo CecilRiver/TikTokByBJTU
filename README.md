@@ -22,8 +22,8 @@ API 设计与分析课程大作业：一个仿抖音的短视频平台，包含 
 ## 目录结构
 
 ```
-backend/tiktok/   Spring Boot 后端
-frontend/tiktok/  Vue 3 前端
+backend/    Spring Boot 后端
+frontend/   Vue 3 前端
 ```
 
 ## 本地运行
@@ -48,7 +48,7 @@ frontend/tiktok/  Vue 3 前端
 3. 启动后端：
 
 ```bash
-cd backend/tiktok
+cd backend
 ./mvnw spring-boot:run
 ```
 
@@ -59,7 +59,7 @@ Windows 下使用 `mvnw.cmd spring-boot:run`。
 环境要求：Node.js。
 
 ```bash
-cd frontend/tiktok
+cd frontend
 npm install
 npm run dev
 ```
