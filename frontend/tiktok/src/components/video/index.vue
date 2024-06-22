@@ -8,7 +8,7 @@
     </v-navigation-drawer>
     <v-main>
       <v-card rounded="0" width="100%" height="100%">
-        <video ref="video" class="video-js vjs-default-skin" controls >
+        <video ref="video" class="video-js vjs-default-skin" controls>
           <source :src="currentVideo.playUrl" :type="currentVideo.videoType || 'video/mp4'" />
         </video>
         <div style="position: absolute;left: 15px;top: 15px;z-index: 99999;">
@@ -16,10 +16,9 @@
             <v-icon :size="20">mdi-close</v-icon>
           </v-btn>
         </div>
-        <v-card class="pa-2" elevation="0" style="display: flex; flex-direction: column;
-    gap: 12px;position: absolute; background-color: transparent; right: 25px; bottom: 25px;z-index: 99999;">
+        <v-card class="pa-2" elevation="0" style="display: flex; flex-direction: column; gap: 12px; position: absolute; background-color: transparent; right: 25px; bottom: 25px; z-index: 99999;">
           <v-badge color="red" icon="mdi-plus" location="bottom" @click="likeUser()">
-            <v-avatar class="elevation-2" :image="currentVideo.user.avatar?apiFileGet(currentVideo.user.avatar): '/logo.png'"></v-avatar>
+            <v-avatar class="elevation-2" :image="currentVideo.user.avatar ? apiFileGet(currentVideo.user.avatar) : '/logo.png'"></v-avatar>
           </v-badge>
           <v-btn size="40" color="blue" icon @click="openRgihtD()">
             <v-icon :size="20">mdi-more</v-icon>
@@ -29,7 +28,6 @@
               <v-icon :size="20">mdi-heart</v-icon>
             </v-btn>
           </v-badge>
-
           <FavoriteCom :video-id="currentVideo.id" :callback="favoriteCallBack">
             <template #default="{ props }">
               <v-badge color="red" :content="currentVideo.favoritesCount" location="bottom">
@@ -41,16 +39,13 @@
           </FavoriteCom>
           <v-badge color="red" :content="currentVideo.startCount" location="bottom">
             <v-btn size="40" color="success" icon @click="copyUrl()">
-            <v-icon :size="20">mdi-near-me</v-icon>
-          </v-btn>
+              <v-icon :size="20">mdi-near-me</v-icon>
+            </v-btn>
           </v-badge>
-          
-
         </v-card>
       </v-card>
       <v-snackbar v-model="snackbar.show" :color="snackbar.color">
         {{ snackbar.text }}
-
         <template v-slot:actions>
           <v-btn color="blue" variant="text" @click="snackbar.show = false">
             了解
@@ -60,6 +55,7 @@
     </v-main>
   </v-layout>
 </template>
+
 <script setup>
 import { computed, getCurrentInstance, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { apiFileGet } from '../../apis/file';
@@ -68,6 +64,7 @@ import { apiAddHistory, apiGetVideoBySimilar, apiInitFollowFeed, apiSetUserVideo
 import FavoriteCom from '../../components/favorite/index.vue';
 import VideoCard from '../../components/video/card.vue';
 import strUtils from '../../utils/strUtil';
+
 const props = defineProps({
   videoInfo: {
     type: Object,
@@ -83,58 +80,57 @@ const props = defineProps({
   },
   nextVideo: {
     type: Function,
-    default: () => {
-
-    }
+    default: () => {}
   },
   closeVideo: {
     type: Function,
-    default: () => { }
+    default: () => {}
   }
 })
+
 const snackbar = ref({
   show: false,
   text: ""
 })
 
-const shareBtn = ()=>{
+const shareBtn = () => {
   apiShareVideo(currentVideo.value.id)
 }
 
-const handleMouseWheel = (event) =>{
+const handleMouseWheel = (event) => {
   console.log(event.deltaY)
-  if(event.deltaY >0) {
+  if(event.deltaY > 0) {
     if (currentIndex.value >= similarList.value.length - 1) {
-        return;
-      }
-      currentIndex.value++;
-  }else {
+      return;
+    }
+    currentIndex.value++;
+  } else {
     if (currentIndex.value < 1) {
-        return;
-      }
-      currentIndex.value--
+      return;
+    }
+    currentIndex.value--;
   }
 }
+
 const drawer = ref(true)
 const instance = getCurrentInstance().proxy
 const video = ref()
 const videoPlayer = ref()
-const similarList = ref([
-  props.videoInfo
-])
+const similarList = ref([props.videoInfo])
 
 const currentIndex = ref(0)
 const currentVideo = computed(() => {
-
   let temp = currentIndex.value >= 0 ? similarList.value[currentIndex.value] : props.videoInfo
   temp.playUrl = apiFileGet(temp.url)
   temp.playCover = apiFileGet(temp.cover)
-  console.log(temp, "aa")
+  console.log("Current video:", temp)
   return temp
 })
+
 const openRgihtD = () => {
   drawer.value = !drawer.value
 }
+
 const favoriteCallBack = (e) => {
   if (e == "已收藏") {
     currentVideo.value.favoritesCount++
@@ -146,6 +142,7 @@ const favoriteCallBack = (e) => {
     text: e
   }
 }
+
 const isAddHistory = ref(true)
 const isLikeVideo = ref(false)
 const windowKeyEvent = (event) => {
@@ -154,22 +151,23 @@ const windowKeyEvent = (event) => {
       if (currentIndex.value < 1) {
         return;
       }
-      currentIndex.value--
-      break
+      currentIndex.value--;
+      break;
     case 40:
       if (currentIndex.value >= similarList.value.length - 1) {
         return;
       }
       currentIndex.value++;
-      break
+      break;
     case 27:
-      props.closeVideo()
-      break
+      props.closeVideo();
+      break;
     case 70:
-      videoPlayer.value.requestFullscreen()
-      break
+      videoPlayer.value.requestFullscreen();
+      break;
   }
 }
+
 const copyUrl = () => {
   shareBtn()
   snackbar.value = {
@@ -177,29 +175,33 @@ const copyUrl = () => {
     show: true
   }
 }
+
 onUnmounted(() => {
   document.removeEventListener('wheel', handleMouseWheel);
   window.removeEventListener("keydown", windowKeyEvent)
 })
 
 const firstInitVideo = () => {
-  console.log(currentVideo)
+  console.log("Initializing video:", currentVideo.value)
   if (videoPlayer.value || !currentVideo.value) return;
-  console.log(video.value)
+
   videoPlayer.value = instance.$video(video.value, {
     playbackRates: [0.5, 1, 1.5, 2],
     notSupportedMessage: "暂不支持该视频类型",
     fill: true,
     autoplay: true
   })
+
   videoPlayer.value.volume(localStorage.getItem("volume") || 1)
-  document.addEventListener('wheel', handleMouseWheel);
+  
+  document.addEventListener('wheel', handleMouseWheel)
   window.addEventListener("keydown", windowKeyEvent)
+  
   videoPlayer.value.on("volumechange", () => {
     localStorage.setItem("volume", videoPlayer.value.volume())
   })
+  
   videoPlayer.value.on("timeupdate", function () {
-    // 播放三秒后添加历史记录
     if (this.currentTime() >= 3 && isAddHistory.value) {
       isAddHistory.value = false
       apiAddHistory(currentVideo.value.id)
@@ -211,19 +213,23 @@ const firstInitVideo = () => {
         apiSetUserVideoModel(currentVideo.value.id, currentVideo.value.labelNames, 1)
       isLikeVideo.value = true;
     } else isLikeVideo.value = false
-
   })
+
+  videoPlayer.value.on("error", function () {
+    console.error("Video.js Error:", videoPlayer.value.error())
+  })
+
   nextTick(() => {
-    // video.value.style['background-image'] = `url(${currentVideo.playCover})`
     videoPlayer.value.play()
   })
+  
   if (props.videoList.length == 0) {
     apiGetVideoBySimilar(props.videoInfo.labelNames, props.videoInfo.id).then(({ data }) => {
       similarList.value = similarList.value.concat(data.data)
     })
   }
-
 }
+
 const likeUser = () => {
   apiFollows(currentVideo.value.user.id).then(({ data }) => {
     if (data.message == '已关注') {
@@ -235,8 +241,9 @@ const likeUser = () => {
     }
   })
 }
+
 onMounted(() => {
-  video.value.style['background-size'] = " cover"
+  video.value.style['background-size'] = "cover"
   video.value.style['background-position'] = "center"
   video.value.style['backdrop-filter'] = "blur(50px)"
   if (document.documentElement.clientWidth < 800)
@@ -245,7 +252,6 @@ onMounted(() => {
 })
 
 const starVideo = () => {
-
   apiStarVideo(currentVideo.value.id).then(({ data }) => {
     snackbar.value = {
       show: true,
@@ -259,19 +265,16 @@ const starVideo = () => {
     } else {
       currentVideo.value.startCount--
     }
-
-
   })
 }
+
 const playVideo = (n) => {
   if (n) {
     props.nextVideo(currentIndex.value)
-    // videoPlayer.value.reset()
     setTimeout(() => {
-      // video.value.style['background-image'] = `url(${n.playCover})`
-
       firstInitVideo()
       isAddHistory.value = true
+      console.log("Playing video with URL:", n.playUrl)
       videoPlayer.value.src([
         {
           src: n.playUrl,
@@ -285,6 +288,7 @@ const playVideo = (n) => {
     }, 10)
   }
 }
+
 watch(() => props.videoList, () => {
   if (props.videoList && props.videoList.length > 0) {
     similarList.value = props.videoList
@@ -293,7 +297,6 @@ watch(() => props.videoList, () => {
   immediate: true,
   deep: true
 })
+
 watch(currentVideo, playVideo)
-
-
-</script>   
+</script>

@@ -232,9 +232,11 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     public Collection<Video> getVideoByTypeId(Long typeId) {
         if (typeId == null) return Collections.EMPTY_LIST;
         final Type type = typeService.getById(typeId);
+        System.out.println("这是类型:"+type);
         if (type == null) return Collections.EMPTY_LIST;
 
         Collection<Long> videoIds = interestPushService.listVideoIdByTypeId(typeId);
+        System.out.println("这是videoIds:"+videoIds);
         if (ObjectUtils.isEmpty(videoIds)) {
             return Collections.EMPTY_LIST;
         }

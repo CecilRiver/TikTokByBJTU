@@ -45,6 +45,10 @@ public class QiNiuConfig {
 
 
     public String uploadToken(String type){
+        // 调试输出
+        System.out.println("Access Key: " + accessKey);
+        System.out.println("Secret Key: " + secretKey);
+        System.out.println("Bucket Name: " + bucketName);
         final Auth auth = buildAuth();
         return auth.uploadToken(bucketName, null, 300, new
                 StringMap().put("mimeLimit", "video/*;image/*"));

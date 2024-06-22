@@ -10,6 +10,7 @@ import com.zkg.tiktok.service.video.TypeService;
 import com.zkg.tiktok.service.video.VideoService;
 import com.zkg.tiktok.util.JwtUtils;
 import com.zkg.tiktok.util.R;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
  * @Version: 1.0
  */
 
+@Api(tags = "")
 @RestController
 @RequestMapping("/tiktok/index")
 public class IndexController {
@@ -68,6 +70,7 @@ public class IndexController {
     @ApiOperation("根据视频分类获取视频")
     @GetMapping("/video/type/{typeId}")
     public R getVideoByTypeId(@PathVariable Long typeId){
+        System.out.println("根据视频分类获取视频:"+typeId);
         return R.ok().data(videoService.getVideoByTypeId(typeId));
     }
 

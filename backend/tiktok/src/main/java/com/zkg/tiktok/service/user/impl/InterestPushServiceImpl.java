@@ -68,16 +68,24 @@ public class InterestPushServiceImpl implements InterestPushService {
 
     @Override
     public Collection<Long> listVideoIdByTypeId(Long typeId) {
-        // 随机推送10个
 
-        final List<Object> list = redisTemplate.opsForSet().randomMembers(RedisConstant.SYSTEM_TYPE_STOCK + typeId, 12);
+
+        redisCacheUtil.sSet(RedisConstant.SYSTEM_TYPE_STOCK + 14,4848);
+
+        redisCacheUtil.sSet(RedisConstant.SYSTEM_TYPE_STOCK + 15,4820);
+        // 随机推送20个
+
+        final List<Object> list = redisTemplate.opsForSet().randomMembers(RedisConstant.SYSTEM_TYPE_STOCK + typeId, 20);
         // 可能会有null
         final HashSet<Long> result = new HashSet<>();
+
+
         for (Object aLong : list) {
             if (aLong!=null){
                 result.add(Long.parseLong(aLong.toString()));
             }
         }
+        System.out.println("result:"+result);
         return result;
     }
 

@@ -75,7 +75,20 @@ public class FileController implements InitializingBean {
         File url = fileService.getFileTrustUrl(fileId);
         System.out.println("视频url地址："+url);
         response.setContentType(url.getType());
-        response.sendRedirect(url.getFileKey());
+//        response.sendRedirect(url.getFileKey());
+        String urlWithQuery = url.getFileKey();
+
+        // 查找查询参数的起始位置（即 '?' 的位置）
+        int queryIndex = urlWithQuery.indexOf('?');
+
+
+        // 如果存在查询参数，截取查询参数前的部分，否则使用整个 URL
+        String urlWithoutQuery = (queryIndex > -1) ? urlWithQuery.substring(0, queryIndex) : urlWithQuery;
+
+        System.out.println("视频url地址截断："+urlWithoutQuery);
+        // 进行重定向
+        response.sendRedirect(urlWithoutQuery);
+
     }
 
     /**

@@ -26,8 +26,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AdminInterceptor(userService))
                 .addPathPatterns("/admin/**","/authorize/**")
-                .addPathPatterns("/luckyjourney/**")
-                .excludePathPatterns("/luckyjourney/login/**","/luckyjourney/index/**","/luckyjourney/cdn/**", "/luckyjourney/file/**");
+                .addPathPatterns("/tiktok/**")
+                .excludePathPatterns("/tiktok/login/**","/tiktok/index/**","/tiktok/cdn/**", "/tiktok/file/**");
 
     }
 
